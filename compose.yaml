@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: slotly
+      POSTGRES_PASSWORD: slotly_local_only
+      POSTGRES_DB: slotly_dev
+    ports:
+      - "45432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U slotly -d slotly_dev"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+    volumes:
+      - slotly_postgres18:/var/lib/postgresql
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+
+volumes:
+  slotly_postgres18:

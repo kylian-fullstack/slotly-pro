@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum LifecycleStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum MembershipStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  STAFF
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REVOKED
+}
+
+model User {
+  id           String          @id @default(uuid()) @db.Uuid
+  email        String          @unique @db.VarChar(254)
+  displayName  String          @map("display_name") @db.VarChar(120)
+  passwordHash String          @map("password_hash") @db.Text
+  status       LifecycleStatus @default(ACTIVE)
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  memberships        Membership[]
+  sessions           Session[]
+  acceptedInvitations Invitation[] @relation("AcceptedInvitationUser")
+  auditEvents         AuditEvent[] @relation("AuditActor")
+
+  @@map("users")
+}
+
+model Organization {
+  id              String          @id @default(uuid()) @db.Uuid
+  slug            String          @unique @db.VarChar(80)
+  displayName     String          @map("display_name") @db.VarChar(160)
+  defaultTimezone String          @default("Europe/Prague") @map("default_timezone") @db.VarChar(64)
+  status          LifecycleStatus @default(ACTIVE)
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  memberships Membership[]
+  sessions    Session[]
+  invitations Invitation[]
+  auditEvents AuditEvent[]
+
+  @@map("organizations")
+}
+
+model Membership {
+  id             String           @id @default(uuid()) @db.Uuid
+  organizationId String           @map("organization_id") @db.Uuid
+  userId         String           @map("user_id") @db.Uuid
+  role           MembershipRole
+  status         MembershipStatus @default(ACTIVE)
+  createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Restrict)
+  sessions     Session[]
+
+  @@unique([organizationId, userId])
+  @@unique([id, organizationId, userId])
+  @@index([organizationId, status, role])
+  @@map("memberships")
+}
+
+model Session {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  membershipId   String    @map("membership_id") @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  tokenDigest    String    @unique @map("token_digest") @db.Char(64)
+  expiresAt      DateTime  @map("expires_at") @db.Timestamptz(3)
+  revokedAt      DateTime? @map("revoked_at") @db.Timestamptz(3)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  membership   Membership   @relation(fields: [membershipId, organizationId, userId], references: [id, organizationId, userId], onDelete: Restrict)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([membershipId, revokedAt])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model Invitation {
+  id               String           @id @default(uuid()) @db.Uuid
+  organizationId   String           @map("organization_id") @db.Uuid
+  email            String           @db.VarChar(254)
+  role             MembershipRole
+  tokenDigest      String           @unique @map("token_digest") @db.Char(64)
+  status           InvitationStatus @default(PENDING)
+  expiresAt        DateTime         @map("expires_at") @db.Timestamptz(3)
+  acceptedAt       DateTime?        @map("accepted_at") @db.Timestamptz(3)
+  acceptedByUserId String?          @map("accepted_by_user_id") @db.Uuid
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  acceptedByUser User?        @relation("AcceptedInvitationUser", fields: [acceptedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([organizationId, status, expiresAt])
+  @@map("invitations")
+}
+
+model AuditEvent {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String?  @map("organization_id") @db.Uuid
+  actorUserId    String?  @map("actor_user_id") @db.Uuid
+  action         String   @db.VarChar(120)
+  targetType     String   @map("target_type") @db.VarChar(80)
+  targetId       String   @map("target_id") @db.VarChar(160)
+  occurredAt     DateTime @default(now()) @map("occurred_at") @db.Timestamptz(3)
+  metadata       Json     @default("{}") @db.JsonB
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  actor         User?         @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@index([organizationId, occurredAt(sort: Desc), id])
+  @@map("audit_events")
+}
+
+model IdempotencyRecord {
+  id                 String   @id @default(uuid()) @db.Uuid
+  operationScope     String   @map("operation_scope") @db.VarChar(100)
+  idempotencyKey     String   @map("idempotency_key") @db.VarChar(200)
+  requestFingerprint String   @map("request_fingerprint") @db.Char(64)
+  responseStatus     Int?     @map("response_status")
+  responseBody       Json?    @map("response_body") @db.JsonB
+  expiresAt          DateTime @map("expires_at") @db.Timestamptz(3)
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@unique([operationScope, idempotencyKey])
+  @@index([expiresAt])
+  @@map("idempotency_records")
+}

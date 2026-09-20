@@ -1,0 +1,33 @@
+{
+  "name": "slotly-pro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @slotly/web dev",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts --passWithNoTests",
+    "test:e2e": "playwright test",
+    "build": "pnpm --filter @slotly/web build",
+    "db:migrate": "pnpm --filter @slotly/db db:migrate",
+    "db:test:assert": "pnpm --filter @slotly/db db:test:assert"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.10.1",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.2.9",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.5",
+    "pg": "8.23.0",
+    "typescript": "6.0.3",
+    "vitest": "5.0.1"
+  }
+}

@@ -1,0 +1,18 @@
+packages:
+  - apps/*
+  - packages/*
+
+overrides:
+  deepmerge-ts: 8.0.0
+  mysql2: 3.23.1
+
+allowBuilds:
+  '@prisma/engines': true
+  argon2: true
+  prisma: true
+  unrs-resolver: true
+
+onlyBuiltDependencies:
+  - argon2
+  - prisma
+  - '@prisma/engines'
