@@ -9,3 +9,4 @@ export * from "./identity-tenancy/rate-limit-store";
 export * from "./identity-tenancy/registration-store";
 export * from "./identity-tenancy/session-store";
 export * from "./identity-tenancy/transaction-runner";
+export * from "./booking/booking-store";

@@ -1,4 +1,4 @@
-import { createDatabasePool, CredentialStore, IdempotencyStore, InvitationStore, MembershipStore, OrganizationStore, RateLimitStore, RegistrationStore, SessionStore } from "@slotly/db";
+import { BookingStore, createDatabasePool, CredentialStore, IdempotencyStore, InvitationStore, MembershipStore, OrganizationStore, RateLimitStore, RegistrationStore, SessionStore } from "@slotly/db";
 import { parseServerEnvironment } from "./env";
 import { createPasswordHasher } from "./security/password";
 import { secretGenerator } from "./security/secrets";
@@ -13,7 +13,7 @@ function createContainer() {
     credentials: new CredentialStore(pool), registrations: new RegistrationStore(pool),
     idempotency: new IdempotencyStore(pool),
     sessions: new SessionStore(pool), invitations: new InvitationStore(pool), memberships: new MembershipStore(pool),
-    organizations: new OrganizationStore(pool), rateLimits: new RateLimitStore(pool)
+    organizations: new OrganizationStore(pool), bookings: new BookingStore(pool), rateLimits: new RateLimitStore(pool)
   };
 }
 
