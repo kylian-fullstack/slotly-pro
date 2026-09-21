@@ -41,6 +41,11 @@ export const bookingStatusPatchSchema = z.object({
   status: z.enum(["CANCELLED", "COMPLETED", "NO_SHOW"])
 }).strict();
 
+export const bookingCancellationSchema = z.object({
+  confirmationCode: z.string().trim().min(6).max(24).transform((value) => value.toUpperCase()),
+  cancellationToken: z.string().min(32).max(200)
+}).strict();
+
 export const publicAvailabilityQuerySchema = z.object({
   serviceId: uuidSchema,
   providerMembershipId: uuidSchema,

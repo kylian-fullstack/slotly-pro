@@ -72,13 +72,17 @@ export function BookingFlow({ slug }: { slug: string }) {
     } catch (error) { setMessage(error instanceof Error ? error.message : "Rezervaci se nepodařilo vytvořit."); }
   }
 
-  if (confirmation) return <main className="booking-shell"><section className="booking-card confirmation-card">
+  if (confirmation) {
+    const cancelQuery = new URLSearchParams({ code: confirmation.booking.confirmationCode, token: confirmation.cancellationToken });
+    return <main className="booking-shell"><section className="booking-card confirmation-card">
     <p className="eyebrow">Rezervace potvrzena</p><h1>Termín je váš.</h1>
     <p className="lede">{new Date(confirmation.booking.startsAt).toLocaleString("cs-CZ", { timeZone: catalog?.organization.timezone })}</p>
     <dl><div><dt>Potvrzovací kód</dt><dd>{confirmation.booking.confirmationCode}</dd></div></dl>
     <p>Uložte si potvrzovací kód. Firma rezervaci okamžitě vidí ve svém kalendáři.</p>
+    <a className="quiet action-link" href={`/rezervace/${encodeURIComponent(slug)}/zrusit?${cancelQuery}`}>Odkaz pro zrušení rezervace</a>
     <button className="primary" onClick={() => location.reload()}>Vytvořit další rezervaci</button>
   </section></main>;
+  }
 
   return <main className="booking-shell"><section className="booking-intro">
     <a className="brand" href="/">Slotly <span>Pro</span></a>

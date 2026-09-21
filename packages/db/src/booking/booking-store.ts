@@ -258,4 +258,28 @@ export class BookingStore {
     } catch (error) { await rollback(client); throw error; }
     finally { client.release(); }
   }
+
+  async cancelPublicBooking(organizationSlug: string, confirmationCode: string, cancellationDigest: string, now: Date) {
+    const client = await this.pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await client.query(
+        `UPDATE bookings b SET status = 'CANCELLED', cancelled_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
+          FROM organizations o WHERE b.organization_id = o.id AND o.slug = $1 AND o.status = 'ACTIVE'
+           AND b.confirmation_code = $2 AND b.cancellation_digest = $3 AND b.status = 'CONFIRMED' AND b.starts_at > $4
+         RETURNING b.id, b.organization_id AS "organizationId", b.status, b.starts_at AS "startsAt"`,
+        [organizationSlug, confirmationCode, cancellationDigest, now]
+      );
+      const booking = result.rows[0];
+      if (!booking) throw new DomainError("RESOURCE_NOT_FOUND", "Rezervace nebyla nalezena nebo ji už nelze zrušit.");
+      await client.query(
+        `INSERT INTO audit_events (id, organization_id, action, target_type, target_id, metadata)
+         VALUES (gen_random_uuid(), $1, 'booking.cancelled_by_customer', 'booking', $2, '{}'::jsonb)`,
+        [booking.organizationId, booking.id]
+      );
+      await client.query("COMMIT");
+      return booking;
+    } catch (error) { await rollback(client); throw error; }
+    finally { client.release(); }
+  }
 }
