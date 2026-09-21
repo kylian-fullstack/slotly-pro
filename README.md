@@ -1,6 +1,6 @@
 # Slotly Pro
 
-Slotly Pro is a production-shaped foundation for a multi-tenant booking system. The current release focuses on the part that is easiest to fake and hardest to repair later: identity, organization isolation, permissions, invitations, session security and an immutable audit trail.
+Slotly Pro is a multi-tenant booking system for service businesses. It combines a public customer booking journey with a Czech operator workspace, collision-safe PostgreSQL scheduling, identity, roles and an immutable audit trail.
 
 The interface is in Czech. The implementation and evidence are intended to be readable by an international engineering team.
 
@@ -15,9 +15,15 @@ The interface is in Czech. The implementation and evidence are intended to be re
 - append-only audit events for security-sensitive changes;
 - PostgreSQL-backed rate limits for login, registration and invitation acceptance;
 - Czech responsive operator UI for login, onboarding, organization, team, invitations and audit;
+- configurable services, prices, durations and assigned team members;
+- recurring weekly working hours for each provider;
+- timezone-aware public availability and booking pages at `/rezervace/{firma}`;
+- database-enforced prevention of concurrent double bookings;
+- an operator calendar with completion, no-show and cancellation workflows;
+- confirmation codes and secret self-service cancellation links;
 - unit, PostgreSQL integration, API abuse and desktop/mobile browser tests.
 
-Live email delivery, MFA, external identity providers, payments and the booking calendar are deliberately not claimed in this release.
+Live email/SMS delivery, payments, MFA and external identity providers are deliberately not claimed in this release. Confirmation is displayed immediately in the browser; no message is sent unless a future notification provider is explicitly configured.
 
 ## Architecture
 
@@ -28,16 +34,25 @@ Versioned /api/v1 routes
         |
 Authentication -> tenant derivation -> CSRF -> authorization
         |
-Application services and transaction boundaries
+Booking APIs and transaction boundaries
         |
 Typed domain policies       PostgreSQL adapters
         |                           |
         +---------- PostgreSQL 18 --+
-                    constraints, locks,
+                    exclusion constraints,
                     append-only audit
 ```
 
 The monorepo keeps framework-free rules in `packages/domain`, request contracts in `packages/contracts`, database adapters and migrations in `packages/db`, and the Next.js boundary in `apps/web`.
+
+## Booking workflow
+
+1. An owner or administrator creates a service and assigns an active team member.
+2. They publish weekly working hours for that provider.
+3. A customer opens `/rezervace/{organization-slug}`, chooses a service, provider, day and a generated free slot.
+4. PostgreSQL accepts only one confirmed booking for an overlapping provider interval, including concurrent requests.
+5. The customer receives a confirmation code and secret cancellation link; the team sees the booking in its workspace immediately.
+6. Staff can complete, cancel or mark the booking as a no-show. Every status change is tenant-scoped and audited.
 
 ## Run locally
 
@@ -78,6 +93,7 @@ Design and security evidence:
 - [Migration recovery](docs/migration-recovery.md)
 - [Current security audit](docs/security-audit-2026-09-20.md)
 - [Identity module acceptance record](docs/identity-module-acceptance.md)
+- [Booking architecture and invariants](docs/booking-architecture.md)
 
 ## Security reporting
 

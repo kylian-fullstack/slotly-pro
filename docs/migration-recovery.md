@@ -6,3 +6,4 @@
 - If application behavior fails after a successful schema change, roll the application forward or temporarily restore the prior compatible application version. Preserve the migrated data.
 - Restoring a database backup is an operator decision for actual data corruption, not the default response to a failed deployment.
 - The test reset guard requires the database-level `slotly_test_only` marker and rejects the development database.
+- The booking migration enables `btree_gist` and adds an exclusion constraint for confirmed provider intervals. Before applying it to an existing installation, verify that no overlapping confirmed bookings exist. Roll application code back without dropping the additive booking tables; schema removal requires a separately reviewed maintenance migration and a verified backup.
