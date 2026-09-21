@@ -92,9 +92,11 @@ test("configures a service, accepts a public booking and lets the customer cance
   await page.getByLabel("E-mail").fill(email);
   await page.getByLabel("Heslo (min. 12 znaků)").fill(password);
   await page.getByRole("button", { name: "Vytvořit účet majitele" }).click();
+  await expect(page.getByRole("status")).toContainText("Účet je vytvořený");
   await page.getByLabel("E-mail").fill(email);
   await page.getByLabel("Heslo").fill(password);
   await page.getByRole("button", { name: "Přihlásit se" }).click();
+  await expect(page.getByRole("heading", { name: "Booking Flow Studio" })).toBeVisible();
 
   const serviceForm = page.locator("form.service-form");
   await serviceForm.getByLabel("Název").fill("Strategická konzultace");
