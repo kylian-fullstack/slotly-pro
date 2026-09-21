@@ -33,6 +33,26 @@ export type Organization = Prisma.OrganizationModel
  */
 export type Membership = Prisma.MembershipModel
 /**
+ * Model Service
+ * 
+ */
+export type Service = Prisma.ServiceModel
+/**
+ * Model ServiceProvider
+ * 
+ */
+export type ServiceProvider = Prisma.ServiceProviderModel
+/**
+ * Model AvailabilityRule
+ * 
+ */
+export type AvailabilityRule = Prisma.AvailabilityRuleModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
  * Model Session
  * 
  */

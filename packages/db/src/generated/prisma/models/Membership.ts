@@ -201,6 +201,9 @@ export type MembershipWhereInput = {
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   sessions?: Prisma.SessionListRelationFilter
+  serviceAssignments?: Prisma.ServiceProviderListRelationFilter
+  availabilityRules?: Prisma.AvailabilityRuleListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
 }
 
 export type MembershipOrderByWithRelationInput = {
@@ -214,11 +217,15 @@ export type MembershipOrderByWithRelationInput = {
   organization?: Prisma.OrganizationOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
+  serviceAssignments?: Prisma.ServiceProviderOrderByRelationAggregateInput
+  availabilityRules?: Prisma.AvailabilityRuleOrderByRelationAggregateInput
+  bookings?: Prisma.BookingOrderByRelationAggregateInput
 }
 
 export type MembershipWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   organizationId_userId?: Prisma.MembershipOrganizationIdUserIdCompoundUniqueInput
+  id_organizationId?: Prisma.MembershipIdOrganizationIdCompoundUniqueInput
   id_organizationId_userId?: Prisma.MembershipIdOrganizationIdUserIdCompoundUniqueInput
   AND?: Prisma.MembershipWhereInput | Prisma.MembershipWhereInput[]
   OR?: Prisma.MembershipWhereInput[]
@@ -232,7 +239,10 @@ export type MembershipWhereUniqueInput = Prisma.AtLeast<{
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   sessions?: Prisma.SessionListRelationFilter
-}, "id" | "organizationId_userId" | "id_organizationId_userId">
+  serviceAssignments?: Prisma.ServiceProviderListRelationFilter
+  availabilityRules?: Prisma.AvailabilityRuleListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
+}, "id" | "organizationId_userId" | "id_organizationId" | "id_organizationId_userId">
 
 export type MembershipOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -269,6 +279,9 @@ export type MembershipCreateInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   sessions?: Prisma.SessionCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProviderInput
 }
 
 export type MembershipUncheckedCreateInput = {
@@ -280,6 +293,9 @@ export type MembershipUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
 }
 
 export type MembershipUpdateInput = {
@@ -291,6 +307,9 @@ export type MembershipUpdateInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProviderNestedInput
 }
 
 export type MembershipUncheckedUpdateInput = {
@@ -302,6 +321,9 @@ export type MembershipUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
 }
 
 export type MembershipCreateManyInput = {
@@ -345,6 +367,11 @@ export type MembershipOrderByRelationAggregateInput = {
 export type MembershipOrganizationIdUserIdCompoundUniqueInput = {
   organizationId: string
   userId: string
+}
+
+export type MembershipIdOrganizationIdCompoundUniqueInput = {
+  id: string
+  organizationId: string
 }
 
 export type MembershipIdOrganizationIdUserIdCompoundUniqueInput = {
@@ -480,6 +507,48 @@ export type EnumMembershipStatusFieldUpdateOperationsInput = {
   set?: $Enums.MembershipStatus
 }
 
+export type MembershipCreateNestedOneWithoutServiceAssignmentsInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutServiceAssignmentsInput, Prisma.MembershipUncheckedCreateWithoutServiceAssignmentsInput>
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutServiceAssignmentsInput
+  connect?: Prisma.MembershipWhereUniqueInput
+}
+
+export type MembershipUpdateOneRequiredWithoutServiceAssignmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutServiceAssignmentsInput, Prisma.MembershipUncheckedCreateWithoutServiceAssignmentsInput>
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutServiceAssignmentsInput
+  upsert?: Prisma.MembershipUpsertWithoutServiceAssignmentsInput
+  connect?: Prisma.MembershipWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MembershipUpdateToOneWithWhereWithoutServiceAssignmentsInput, Prisma.MembershipUpdateWithoutServiceAssignmentsInput>, Prisma.MembershipUncheckedUpdateWithoutServiceAssignmentsInput>
+}
+
+export type MembershipCreateNestedOneWithoutAvailabilityRulesInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutAvailabilityRulesInput, Prisma.MembershipUncheckedCreateWithoutAvailabilityRulesInput>
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutAvailabilityRulesInput
+  connect?: Prisma.MembershipWhereUniqueInput
+}
+
+export type MembershipUpdateOneRequiredWithoutAvailabilityRulesNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutAvailabilityRulesInput, Prisma.MembershipUncheckedCreateWithoutAvailabilityRulesInput>
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutAvailabilityRulesInput
+  upsert?: Prisma.MembershipUpsertWithoutAvailabilityRulesInput
+  connect?: Prisma.MembershipWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MembershipUpdateToOneWithWhereWithoutAvailabilityRulesInput, Prisma.MembershipUpdateWithoutAvailabilityRulesInput>, Prisma.MembershipUncheckedUpdateWithoutAvailabilityRulesInput>
+}
+
+export type MembershipCreateNestedOneWithoutBookingsInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutBookingsInput, Prisma.MembershipUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutBookingsInput
+  connect?: Prisma.MembershipWhereUniqueInput
+}
+
+export type MembershipUpdateOneRequiredWithoutBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutBookingsInput, Prisma.MembershipUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutBookingsInput
+  upsert?: Prisma.MembershipUpsertWithoutBookingsInput
+  connect?: Prisma.MembershipWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MembershipUpdateToOneWithWhereWithoutBookingsInput, Prisma.MembershipUpdateWithoutBookingsInput>, Prisma.MembershipUncheckedUpdateWithoutBookingsInput>
+}
+
 export type MembershipCreateNestedOneWithoutSessionsInput = {
   create?: Prisma.XOR<Prisma.MembershipCreateWithoutSessionsInput, Prisma.MembershipUncheckedCreateWithoutSessionsInput>
   connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutSessionsInput
@@ -502,6 +571,9 @@ export type MembershipCreateWithoutUserInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
   sessions?: Prisma.SessionCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProviderInput
 }
 
 export type MembershipUncheckedCreateWithoutUserInput = {
@@ -512,6 +584,9 @@ export type MembershipUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
 }
 
 export type MembershipCreateOrConnectWithoutUserInput = {
@@ -561,6 +636,9 @@ export type MembershipCreateWithoutOrganizationInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   sessions?: Prisma.SessionCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProviderInput
 }
 
 export type MembershipUncheckedCreateWithoutOrganizationInput = {
@@ -571,6 +649,9 @@ export type MembershipUncheckedCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
 }
 
 export type MembershipCreateOrConnectWithoutOrganizationInput = {
@@ -599,6 +680,210 @@ export type MembershipUpdateManyWithWhereWithoutOrganizationInput = {
   data: Prisma.XOR<Prisma.MembershipUpdateManyMutationInput, Prisma.MembershipUncheckedUpdateManyWithoutOrganizationInput>
 }
 
+export type MembershipCreateWithoutServiceAssignmentsInput = {
+  id?: string
+  role: $Enums.MembershipRole
+  status?: $Enums.MembershipStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
+  user: Prisma.UserCreateNestedOneWithoutMembershipsInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProviderInput
+}
+
+export type MembershipUncheckedCreateWithoutServiceAssignmentsInput = {
+  id?: string
+  organizationId: string
+  userId: string
+  role: $Enums.MembershipRole
+  status?: $Enums.MembershipStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
+}
+
+export type MembershipCreateOrConnectWithoutServiceAssignmentsInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutServiceAssignmentsInput, Prisma.MembershipUncheckedCreateWithoutServiceAssignmentsInput>
+}
+
+export type MembershipUpsertWithoutServiceAssignmentsInput = {
+  update: Prisma.XOR<Prisma.MembershipUpdateWithoutServiceAssignmentsInput, Prisma.MembershipUncheckedUpdateWithoutServiceAssignmentsInput>
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutServiceAssignmentsInput, Prisma.MembershipUncheckedCreateWithoutServiceAssignmentsInput>
+  where?: Prisma.MembershipWhereInput
+}
+
+export type MembershipUpdateToOneWithWhereWithoutServiceAssignmentsInput = {
+  where?: Prisma.MembershipWhereInput
+  data: Prisma.XOR<Prisma.MembershipUpdateWithoutServiceAssignmentsInput, Prisma.MembershipUncheckedUpdateWithoutServiceAssignmentsInput>
+}
+
+export type MembershipUpdateWithoutServiceAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+  status?: Prisma.EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProviderNestedInput
+}
+
+export type MembershipUncheckedUpdateWithoutServiceAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+  status?: Prisma.EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
+}
+
+export type MembershipCreateWithoutAvailabilityRulesInput = {
+  id?: string
+  role: $Enums.MembershipRole
+  status?: $Enums.MembershipStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
+  user: Prisma.UserCreateNestedOneWithoutMembershipsInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProviderInput
+}
+
+export type MembershipUncheckedCreateWithoutAvailabilityRulesInput = {
+  id?: string
+  organizationId: string
+  userId: string
+  role: $Enums.MembershipRole
+  status?: $Enums.MembershipStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
+}
+
+export type MembershipCreateOrConnectWithoutAvailabilityRulesInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutAvailabilityRulesInput, Prisma.MembershipUncheckedCreateWithoutAvailabilityRulesInput>
+}
+
+export type MembershipUpsertWithoutAvailabilityRulesInput = {
+  update: Prisma.XOR<Prisma.MembershipUpdateWithoutAvailabilityRulesInput, Prisma.MembershipUncheckedUpdateWithoutAvailabilityRulesInput>
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutAvailabilityRulesInput, Prisma.MembershipUncheckedCreateWithoutAvailabilityRulesInput>
+  where?: Prisma.MembershipWhereInput
+}
+
+export type MembershipUpdateToOneWithWhereWithoutAvailabilityRulesInput = {
+  where?: Prisma.MembershipWhereInput
+  data: Prisma.XOR<Prisma.MembershipUpdateWithoutAvailabilityRulesInput, Prisma.MembershipUncheckedUpdateWithoutAvailabilityRulesInput>
+}
+
+export type MembershipUpdateWithoutAvailabilityRulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+  status?: Prisma.EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProviderNestedInput
+}
+
+export type MembershipUncheckedUpdateWithoutAvailabilityRulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+  status?: Prisma.EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
+}
+
+export type MembershipCreateWithoutBookingsInput = {
+  id?: string
+  role: $Enums.MembershipRole
+  status?: $Enums.MembershipStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
+  user: Prisma.UserCreateNestedOneWithoutMembershipsInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleCreateNestedManyWithoutMembershipInput
+}
+
+export type MembershipUncheckedCreateWithoutBookingsInput = {
+  id?: string
+  organizationId: string
+  userId: string
+  role: $Enums.MembershipRole
+  status?: $Enums.MembershipStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutMembershipInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedCreateNestedManyWithoutMembershipInput
+}
+
+export type MembershipCreateOrConnectWithoutBookingsInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutBookingsInput, Prisma.MembershipUncheckedCreateWithoutBookingsInput>
+}
+
+export type MembershipUpsertWithoutBookingsInput = {
+  update: Prisma.XOR<Prisma.MembershipUpdateWithoutBookingsInput, Prisma.MembershipUncheckedUpdateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutBookingsInput, Prisma.MembershipUncheckedCreateWithoutBookingsInput>
+  where?: Prisma.MembershipWhereInput
+}
+
+export type MembershipUpdateToOneWithWhereWithoutBookingsInput = {
+  where?: Prisma.MembershipWhereInput
+  data: Prisma.XOR<Prisma.MembershipUpdateWithoutBookingsInput, Prisma.MembershipUncheckedUpdateWithoutBookingsInput>
+}
+
+export type MembershipUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+  status?: Prisma.EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUpdateManyWithoutMembershipNestedInput
+}
+
+export type MembershipUncheckedUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+  status?: Prisma.EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedUpdateManyWithoutMembershipNestedInput
+}
+
 export type MembershipCreateWithoutSessionsInput = {
   id?: string
   role: $Enums.MembershipRole
@@ -607,6 +892,9 @@ export type MembershipCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
+  serviceAssignments?: Prisma.ServiceProviderCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProviderInput
 }
 
 export type MembershipUncheckedCreateWithoutSessionsInput = {
@@ -617,6 +905,9 @@ export type MembershipUncheckedCreateWithoutSessionsInput = {
   status?: $Enums.MembershipStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  serviceAssignments?: Prisma.ServiceProviderUncheckedCreateNestedManyWithoutMembershipInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedCreateNestedManyWithoutMembershipInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
 }
 
 export type MembershipCreateOrConnectWithoutSessionsInput = {
@@ -643,6 +934,9 @@ export type MembershipUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProviderNestedInput
 }
 
 export type MembershipUncheckedUpdateWithoutSessionsInput = {
@@ -653,6 +947,9 @@ export type MembershipUncheckedUpdateWithoutSessionsInput = {
   status?: Prisma.EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceAssignments?: Prisma.ServiceProviderUncheckedUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
 }
 
 export type MembershipCreateManyUserInput = {
@@ -672,6 +969,9 @@ export type MembershipUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProviderNestedInput
 }
 
 export type MembershipUncheckedUpdateWithoutUserInput = {
@@ -682,6 +982,9 @@ export type MembershipUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
 }
 
 export type MembershipUncheckedUpdateManyWithoutUserInput = {
@@ -710,6 +1013,9 @@ export type MembershipUpdateWithoutOrganizationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProviderNestedInput
 }
 
 export type MembershipUncheckedUpdateWithoutOrganizationInput = {
@@ -720,6 +1026,9 @@ export type MembershipUncheckedUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutMembershipNestedInput
+  serviceAssignments?: Prisma.ServiceProviderUncheckedUpdateManyWithoutMembershipNestedInput
+  availabilityRules?: Prisma.AvailabilityRuleUncheckedUpdateManyWithoutMembershipNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
 }
 
 export type MembershipUncheckedUpdateManyWithoutOrganizationInput = {
@@ -738,10 +1047,16 @@ export type MembershipUncheckedUpdateManyWithoutOrganizationInput = {
 
 export type MembershipCountOutputType = {
   sessions: number
+  serviceAssignments: number
+  availabilityRules: number
+  bookings: number
 }
 
 export type MembershipCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | MembershipCountOutputTypeCountSessionsArgs
+  serviceAssignments?: boolean | MembershipCountOutputTypeCountServiceAssignmentsArgs
+  availabilityRules?: boolean | MembershipCountOutputTypeCountAvailabilityRulesArgs
+  bookings?: boolean | MembershipCountOutputTypeCountBookingsArgs
 }
 
 /**
@@ -761,6 +1076,27 @@ export type MembershipCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.T
   where?: Prisma.SessionWhereInput
 }
 
+/**
+ * MembershipCountOutputType without action
+ */
+export type MembershipCountOutputTypeCountServiceAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ServiceProviderWhereInput
+}
+
+/**
+ * MembershipCountOutputType without action
+ */
+export type MembershipCountOutputTypeCountAvailabilityRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AvailabilityRuleWhereInput
+}
+
+/**
+ * MembershipCountOutputType without action
+ */
+export type MembershipCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
 
 export type MembershipSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -773,6 +1109,9 @@ export type MembershipSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sessions?: boolean | Prisma.Membership$sessionsArgs<ExtArgs>
+  serviceAssignments?: boolean | Prisma.Membership$serviceAssignmentsArgs<ExtArgs>
+  availabilityRules?: boolean | Prisma.Membership$availabilityRulesArgs<ExtArgs>
+  bookings?: boolean | Prisma.Membership$bookingsArgs<ExtArgs>
   _count?: boolean | Prisma.MembershipCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["membership"]>
 
@@ -815,6 +1154,9 @@ export type MembershipInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sessions?: boolean | Prisma.Membership$sessionsArgs<ExtArgs>
+  serviceAssignments?: boolean | Prisma.Membership$serviceAssignmentsArgs<ExtArgs>
+  availabilityRules?: boolean | Prisma.Membership$availabilityRulesArgs<ExtArgs>
+  bookings?: boolean | Prisma.Membership$bookingsArgs<ExtArgs>
   _count?: boolean | Prisma.MembershipCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MembershipIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -832,6 +1174,9 @@ export type $MembershipPayload<ExtArgs extends runtime.Types.Extensions.Internal
     organization: Prisma.$OrganizationPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
     sessions: Prisma.$SessionPayload<ExtArgs>[]
+    serviceAssignments: Prisma.$ServiceProviderPayload<ExtArgs>[]
+    availabilityRules: Prisma.$AvailabilityRulePayload<ExtArgs>[]
+    bookings: Prisma.$BookingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1238,6 +1583,9 @@ export interface Prisma__MembershipClient<T, Null = never, ExtArgs extends runti
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   sessions<T extends Prisma.Membership$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Membership$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  serviceAssignments<T extends Prisma.Membership$serviceAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Membership$serviceAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceProviderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  availabilityRules<T extends Prisma.Membership$availabilityRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Membership$availabilityRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvailabilityRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookings<T extends Prisma.Membership$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Membership$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1696,6 +2044,78 @@ export type Membership$sessionsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * Membership.serviceAssignments
+ */
+export type Membership$serviceAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ServiceProvider
+   */
+  select?: Prisma.ServiceProviderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ServiceProvider
+   */
+  omit?: Prisma.ServiceProviderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ServiceProviderInclude<ExtArgs> | null
+  where?: Prisma.ServiceProviderWhereInput
+  orderBy?: Prisma.ServiceProviderOrderByWithRelationInput | Prisma.ServiceProviderOrderByWithRelationInput[]
+  cursor?: Prisma.ServiceProviderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ServiceProviderScalarFieldEnum | Prisma.ServiceProviderScalarFieldEnum[]
+}
+
+/**
+ * Membership.availabilityRules
+ */
+export type Membership$availabilityRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AvailabilityRule
+   */
+  select?: Prisma.AvailabilityRuleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AvailabilityRule
+   */
+  omit?: Prisma.AvailabilityRuleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AvailabilityRuleInclude<ExtArgs> | null
+  where?: Prisma.AvailabilityRuleWhereInput
+  orderBy?: Prisma.AvailabilityRuleOrderByWithRelationInput | Prisma.AvailabilityRuleOrderByWithRelationInput[]
+  cursor?: Prisma.AvailabilityRuleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AvailabilityRuleScalarFieldEnum | Prisma.AvailabilityRuleScalarFieldEnum[]
+}
+
+/**
+ * Membership.bookings
+ */
+export type Membership$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
 }
 
 /**

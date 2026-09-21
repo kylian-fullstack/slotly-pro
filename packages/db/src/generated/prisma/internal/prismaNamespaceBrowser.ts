@@ -54,6 +54,10 @@ export const ModelName = {
   User: 'User',
   Organization: 'Organization',
   Membership: 'Membership',
+  Service: 'Service',
+  ServiceProvider: 'ServiceProvider',
+  AvailabilityRule: 'AvailabilityRule',
+  Booking: 'Booking',
   Session: 'Session',
   Invitation: 'Invitation',
   AuditEvent: 'AuditEvent',
@@ -113,6 +117,69 @@ export const MembershipScalarFieldEnum = {
 } as const
 
 export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
+
+
+export const ServiceScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  description: 'description',
+  durationMinutes: 'durationMinutes',
+  priceCents: 'priceCents',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
+
+
+export const ServiceProviderScalarFieldEnum = {
+  organizationId: 'organizationId',
+  serviceId: 'serviceId',
+  membershipId: 'membershipId',
+  active: 'active',
+  createdAt: 'createdAt'
+} as const
+
+export type ServiceProviderScalarFieldEnum = (typeof ServiceProviderScalarFieldEnum)[keyof typeof ServiceProviderScalarFieldEnum]
+
+
+export const AvailabilityRuleScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  membershipId: 'membershipId',
+  weekday: 'weekday',
+  startMinute: 'startMinute',
+  endMinute: 'endMinute',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AvailabilityRuleScalarFieldEnum = (typeof AvailabilityRuleScalarFieldEnum)[keyof typeof AvailabilityRuleScalarFieldEnum]
+
+
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  serviceId: 'serviceId',
+  providerMembershipId: 'providerMembershipId',
+  customerName: 'customerName',
+  customerEmail: 'customerEmail',
+  customerPhone: 'customerPhone',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  status: 'status',
+  confirmationCode: 'confirmationCode',
+  cancellationDigest: 'cancellationDigest',
+  notes: 'notes',
+  cancelledAt: 'cancelledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

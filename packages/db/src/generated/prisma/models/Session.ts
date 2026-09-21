@@ -513,10 +513,6 @@ export type SessionUncheckedUpdateManyWithoutMembershipNestedInput = {
   deleteMany?: Prisma.SessionScalarWhereInput | Prisma.SessionScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type SessionCreateWithoutUserInput = {
   id?: string
   tokenDigest: string
