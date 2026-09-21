@@ -80,9 +80,12 @@ export function OperatorApp() {
     try {
       const result = await mutate("/api/v1/members/invitations", "POST", { email: data.get("email"), role: data.get("role"), expiresInHours: 48 }) as { token: string };
       const link = `${location.origin}/pozvanka/${encodeURIComponent(result.token)}`;
-      let copied = false;
-      try { await navigator.clipboard?.writeText(link); copied = true; } catch { /* The link remains visible for manual copying. */ }
-      setMessage(`Pozvánka je vytvořená. ${copied ? "Odkaz byl zkopírován" : "Zkopírujte odkaz"}: ${link}`);
+      setMessage(`Pozvánka je vytvořená. Zkopírujte odkaz: ${link}`);
+      if (navigator.clipboard) {
+        void navigator.clipboard.writeText(link)
+          .then(() => setMessage(`Pozvánka je vytvořená. Odkaz byl zkopírován: ${link}`))
+          .catch(() => { /* The link is already visible for manual copying. */ });
+      }
     } catch (error) { setMessage(error instanceof Error ? error.message : "Pozvánku se nepodařilo vytvořit."); }
   }
 

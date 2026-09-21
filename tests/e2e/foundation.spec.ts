@@ -121,7 +121,7 @@ test("configures a service, accepts a public booking and lets the customer cance
   await page.getByLabel("E-mail").fill(`customer-${suffix}@example.test`);
   await page.getByRole("button", { name: "Závazně rezervovat" }).click();
   await expect(page.getByRole("heading", { name: "Termín je váš." })).toBeVisible();
-  await expect(page.getByText("Potvrzovací kód")).toBeVisible();
+  await expect(page.getByText("Potvrzovací kód", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Odkaz pro zrušení rezervace" }).click();
   await page.getByRole("button", { name: "Zrušit rezervaci" }).click();
   await expect(page.getByRole("heading", { name: "Rezervace je zrušena." })).toBeVisible();
