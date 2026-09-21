@@ -1,6 +1,6 @@
 {
   "name": "slotly-pro",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.19.0",
@@ -15,6 +15,7 @@
     "test:integration": "vitest run --config vitest.integration.config.ts --passWithNoTests",
     "test:e2e": "playwright test",
     "build": "pnpm --filter @slotly/web build",
+    "deploy:build": "pnpm db:migrate && pnpm build",
     "db:migrate": "pnpm --filter @slotly/db db:migrate",
     "db:test:assert": "pnpm --filter @slotly/db db:test:assert"
   },
