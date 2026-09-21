@@ -97,12 +97,12 @@ export function OperatorApp() {
   }
 
   async function createService(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); const data = new FormData(event.currentTarget);
+    event.preventDefault(); const form = event.currentTarget; const data = new FormData(form);
     try {
       await mutate("/api/v1/booking/services", "POST", { name: data.get("name"), description: data.get("description") ?? "",
         durationMinutes: Number(data.get("durationMinutes")), priceCents: Math.round(Number(data.get("price")) * 100),
         providerMembershipIds: [String(data.get("providerMembershipId"))] });
-      event.currentTarget.reset(); await load(); setMessage("Služba byla zveřejněna v rezervačním formuláři.");
+      form.reset(); await load(); setMessage("Služba byla zveřejněna v rezervačním formuláři.");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Službu se nepodařilo vytvořit."); }
   }
 
