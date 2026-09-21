@@ -1,6 +1,6 @@
 import type { Membership, MembershipRole } from "./entities";
 
-export const capabilities = ["READ_ORGANIZATION", "UPDATE_ORGANIZATION", "INVITE_STAFF", "MANAGE_STAFF", "INVITE_ADMIN", "MANAGE_ADMIN", "MANAGE_OWNER", "READ_AUDIT"] as const;
+export const capabilities = ["READ_ORGANIZATION", "UPDATE_ORGANIZATION", "INVITE_STAFF", "MANAGE_STAFF", "INVITE_ADMIN", "MANAGE_ADMIN", "MANAGE_OWNER", "READ_AUDIT", "READ_BOOKINGS", "MANAGE_BOOKINGS", "MANAGE_SCHEDULING"] as const;
 export type Capability = (typeof capabilities)[number];
 export type DenialReason = "INACTIVE_MEMBERSHIP" | "TENANT_BOUNDARY" | "INSUFFICIENT_ROLE";
 export type AuthorizationDecision = { readonly allowed: true } | { readonly allowed: false; readonly reason: DenialReason };
@@ -13,7 +13,10 @@ const allowedRoles: Readonly<Record<Capability, readonly MembershipRole[]>> = {
   INVITE_ADMIN: ["OWNER"],
   MANAGE_ADMIN: ["OWNER"],
   MANAGE_OWNER: ["OWNER"],
-  READ_AUDIT: ["OWNER", "ADMIN"]
+  READ_AUDIT: ["OWNER", "ADMIN"],
+  READ_BOOKINGS: ["OWNER", "ADMIN", "STAFF"],
+  MANAGE_BOOKINGS: ["OWNER", "ADMIN", "STAFF"],
+  MANAGE_SCHEDULING: ["OWNER", "ADMIN"]
 };
 
 export function authorize(actor: Membership, capability: Capability, target?: Pick<Membership, "organizationId">): AuthorizationDecision {

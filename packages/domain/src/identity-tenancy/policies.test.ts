@@ -8,7 +8,9 @@ const otherOrganizationId = parseOrganizationId("22222222-2222-4222-8222-2222222
 const expected: Readonly<Record<Capability, readonly MembershipRole[]>> = {
   READ_ORGANIZATION: ["OWNER", "ADMIN", "STAFF"], UPDATE_ORGANIZATION: ["OWNER", "ADMIN"],
   INVITE_STAFF: ["OWNER", "ADMIN"], MANAGE_STAFF: ["OWNER", "ADMIN"], INVITE_ADMIN: ["OWNER"],
-  MANAGE_ADMIN: ["OWNER"], MANAGE_OWNER: ["OWNER"], READ_AUDIT: ["OWNER", "ADMIN"]
+  MANAGE_ADMIN: ["OWNER"], MANAGE_OWNER: ["OWNER"], READ_AUDIT: ["OWNER", "ADMIN"],
+  READ_BOOKINGS: ["OWNER", "ADMIN", "STAFF"], MANAGE_BOOKINGS: ["OWNER", "ADMIN", "STAFF"],
+  MANAGE_SCHEDULING: ["OWNER", "ADMIN"]
 };
 
 function membership(role: MembershipRole, active = true): Membership {
